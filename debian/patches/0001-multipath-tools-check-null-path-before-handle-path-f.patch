@@ -1,0 +1,48 @@
+From 83924318b419fa2ac25e3eb90a5eb59c9c467666 Mon Sep 17 00:00:00 2001
+From: Guan Junxiong <guanjunxiong@huawei.com>
+Date: Mon, 4 Dec 2017 21:15:50 +0800
+Subject: [PATCH] multipath-tools: check null path before handle path-failed
+ event
+
+In the hot-plug storage OS, if we tear down the target storage,
+there is a race between the path removing from the path list and
+handling the path-failed udev event. Therefore, we need to check
+null path before handle path-failed event.
+
+Signed-off-by: Guan Junxiong <guanjunxiong@huawei.com>
+---
+ multipathd/main.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+--- a/multipathd/main.c
++++ b/multipathd/main.c
+@@ -1073,7 +1073,7 @@ uev_pathfail_check(struct uevent *uev, s
+ {
+ 	char *action = NULL, *devt = NULL;
+ 	struct path *pp;
+-	int r;
++	int r = 1;
+ 
+ 	action = uevent_get_dm_action(uev);
+ 	if (!action)
+@@ -1090,15 +1090,17 @@ uev_pathfail_check(struct uevent *uev, s
+ 	lock(&vecs->lock);
+ 	pthread_testcancel();
+ 	pp = find_path_by_devt(vecs->pathvec, devt);
++    if (!pp)
++        goto out_lock;
+ 	r = io_err_stat_handle_pathfail(pp);
+-	lock_cleanup_pop(vecs->lock);
+-
+ 	if (r)
+ 		condlog(3, "io_err_stat: %s: cannot handle pathfail uevent",
+ 				pp->dev);
++out_lock:
++	lock_cleanup_pop(vecs->lock);
+ 	FREE(devt);
+ 	FREE(action);
+-	return 0;
++	return r;
+ out:
+ 	FREE(action);
+ 	return 1;

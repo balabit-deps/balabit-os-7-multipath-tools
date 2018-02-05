@@ -1,0 +1,10 @@
+Disable blk-availability.service. Seems to be something not present in Debian, yet.
+--- a/multipathd/multipathd.service
++++ b/multipathd/multipathd.service
+@@ -1,6 +1,5 @@
+ [Unit]
+ Description=Device-Mapper Multipath Device Controller
+-Requires=blk-availability.service
+ Before=iscsi.service iscsid.service lvm2-activation-early.service
+ Before=local-fs-pre.target
+ After=multipathd.socket

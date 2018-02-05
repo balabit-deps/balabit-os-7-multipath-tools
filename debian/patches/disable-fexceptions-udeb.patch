@@ -1,0 +1,16 @@
+From: Mauricio Faria de Oliveira <mauricfo@linux.vnet.ibm.com>
+Subject: Make the use of -fexceptions conditional.
+Last-Update: 2015-09-09
+
+--- a/Makefile.inc
++++ b/Makefile.inc
+@@ -126,5 +126,9 @@ check_file = $(shell	\
+ 	echo "$$found" \
+ 	)
+ 
++ifdef CFLAGS_DISABLE_FEXCEPTIONS
++	CFLAGS := $(filter-out -fexceptions,$(CFLAGS))
++endif
++
+ %.o:	%.c
+ 	$(CC) $(CFLAGS) -c -o $@ $<

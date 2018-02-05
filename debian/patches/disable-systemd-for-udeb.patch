@@ -1,0 +1,18 @@
+D-I does not support systemd. So our udebs need to be systemd free
+--- a/Makefile.inc
++++ b/Makefile.inc
+@@ -35,9 +35,11 @@
+ 	endif
+ endif
+ 
+-ifndef SYSTEMD
+-	ifeq ($(shell systemctl --version > /dev/null 2>&1 && echo 1), 1)
+-		SYSTEMD = $(shell systemctl --version 2> /dev/null |  sed -n 's/systemd \([0-9]*\)/\1/p')
++ifeq ($(USE_SYSTEMD), 1)
++	ifndef SYSTEMD
++		ifeq ($(shell systemctl --version > /dev/null 2>&1 && echo 1), 1)
++			SYSTEMD = $(shell systemctl --version 2> /dev/null |  sed -n 's/systemd \([0-9]*\)/\1/p')
++		endif
+ 	endif
+ endif
+ 

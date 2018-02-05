@@ -1,0 +1,38 @@
+Fix FTBFS on most 32 bit architectures
+
+
+The build seems to be failing because on these architectures "unsigned long" and "uint64_t" produce different values
+
+
+
+
+cc -g -O2 -fPIE -fstack-protector-strong -Wformat -Werror=format-security -static-libgcc -Wdate-time -D_FORTIFY_SOURCE=2 -O2 -g -pipe -Wformat-security -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -Wunused -Wstrict-prototypes -fPIC -DLIB_STRING=\"/lib\" -DRUN_DIR=\"run\" -I../libmultipath -I../libmpathpersist -I../libmpathcmd -c -o cli.o cli.c
+cli.c:112:1: error: conflicting types for 'set_unlocked_handler_callback'
+ set_unlocked_handler_callback (unsigned long fp,int (*fn)(void *, char **, int *, void *))
+ ^
+In file included from cli.c:16:0:
+cli.h:110:5: note: previous declaration of 'set_unlocked_handler_callback' was here
+ int set_unlocked_handler_callback (uint64_t fp, int (*fn)(void *, char **, int *, void *));
+     ^
+../Makefile.inc:74: recipe for target 'cli.o' failed
+make[2]: *** [cli.o] Error 1
+make[2]: Leaving directory '/«PKGBUILDDIR»/multipathd'
+Makefile:42: recipe for target 'recurse' failed
+make[1]: *** [recurse] Error 2
+make[1]: Leaving directory '/«PKGBUILDDIR»'
+debian/rules:45: recipe for target 'build-multipath-udeb-stamp' failed
+make: *** [build-multipath-udeb-stamp] Error 2
+dpkg-buildpackage: error: debian/rules build-arch gave error exit status 2
+────────────────────────────────────────────────────────────────────────────────
+Build finished at 20160531-1405
+--- a/multipathd/cli.c
++++ b/multipathd/cli.c
+@@ -109,7 +109,7 @@
+ }
+ 
+ int
+-set_unlocked_handler_callback (unsigned long fp,int (*fn)(void *, char **, int *, void *))
++set_unlocked_handler_callback (uint64_t fp,int (*fn)(void *, char **, int *, void *))
+ {
+ 	struct handler * h = find_handler(fp);
+ 

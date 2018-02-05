@@ -1,0 +1,26 @@
+From 791c7886e9f543dec1db7eeb38dd27a965b46139 Mon Sep 17 00:00:00 2001
+From: Vincent McIntyre <vincent.mcintyre@csiro.au>
+Date: Fri, 9 Jun 2017 16:43:53 +1000
+Subject: [PATCH 2/4] Silence bogus warning about undefined macro
+
+Signed-off-by: Vincent McIntyre <vincent.mcintyre@csiro.au>
+---
+ multipathd/multipathd.8 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/multipathd/multipathd.8 b/multipathd/multipathd.8
+index 4c765af..cf90176 100644
+--- a/multipathd/multipathd.8
++++ b/multipathd/multipathd.8
+@@ -122,7 +122,7 @@ Show the current multipath topology. Same as '\fImultipath \-ll\fR'.
+ .B list|show map|multipath $map topology
+ Show topology of a single multipath device specified by $map, for example
+ 36005076303ffc56200000000000010aa. This map could be obtained from
+-'\fIlist maps\fR'.
++ '\fIlist maps\fR'.
+ .
+ .TP
+ .B list|show wildcards
+-- 
+2.1.4
+

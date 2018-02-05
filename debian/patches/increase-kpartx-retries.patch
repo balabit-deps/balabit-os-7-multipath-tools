@@ -1,0 +1,18 @@
+https://www.redhat.com/archives/dm-devel/2015-May/msg00087.html
+
+Many users have reported that increasing the retries solves the problem
+
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=785251
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=734794
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=608737
+--- a/kpartx/lopart.c
++++ b/kpartx/lopart.c
+@@ -288,7 +288,7 @@
+ extern int 
+ del_loop (const char *device)
+ {
+-	int retries = 3;
++	int retries = 5;
+ 	int fd;
+ 
+ 	if ((fd = open (device, O_RDONLY)) < 0) {

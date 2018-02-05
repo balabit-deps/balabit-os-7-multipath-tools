@@ -1,0 +1,27 @@
+From 87679c75bbb68785e45fc680f80f9e21d4c18e49 Mon Sep 17 00:00:00 2001
+From: Vincent McIntyre <vincent.mcintyre@csiro.au>
+Date: Fri, 9 Jun 2017 16:45:08 +1000
+Subject: [PATCH 3/4] Silence one of the linebreak warnings
+
+Signed-off-by: Vincent McIntyre <vincent.mcintyre@csiro.au>
+---
+ multipath/multipath.conf.5 | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/multipath/multipath.conf.5 b/multipath/multipath.conf.5
+index b7d7e59..04ff03d 100644
+--- a/multipath/multipath.conf.5
++++ b/multipath/multipath.conf.5
+@@ -869,7 +869,8 @@ The following keywords are recognized:
+ Regular expression of the device nodes to be excluded.
+ .RS
+ .TP
+-Default value is: \fB^(ram|raw|loop|fd|md|dm-|sr|scd|st|dcssblk)[0-9]\fR, \fB^(td|hd|vd)[a-z]\fR and \fB^nvme\fR
++Default value is: \fB^(ram|raw|loop|fd|md|dm-|sr|scd|st|dcssblk)[0-9]\fR,
++\fB^(td|hd|vd)[a-z]\fR and \fB^nvme\fR
+ .RE
+ .TP
+ .B wwid
+-- 
+2.1.4
+
